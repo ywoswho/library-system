@@ -1,12 +1,13 @@
 package net.ywoswho.librarysystem.controller;
 
+import jakarta.validation.Valid;
+import net.ywoswho.librarysystem.dto.book.BookDetailsDto;
 import net.ywoswho.librarysystem.dto.book.BookListItemDto;
+import net.ywoswho.librarysystem.dto.book.CreateBookRequest;
 import net.ywoswho.librarysystem.service.BookService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,8 +21,21 @@ public class BookController {
     }
 
     @GetMapping
-    public ResponseEntity<List<BookListItemDto>> getAllBooks() {
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(service.getAllBooks());
+    public List<BookListItemDto> getAllBooks() {
+        return service.getAllBooks();
+    }
+
+    @GetMapping("/{id}")
+    public BookDetailsDto getBookById(
+            @PathVariable Long id
+    ) {
+        return service.getBookById(id);
+    }
+
+    @PostMapping
+    public ResponseEntity<BookListItemDto> createBook(
+            @RequestBody @Valid CreateBookRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(service.createBook(request));
     }
 }
