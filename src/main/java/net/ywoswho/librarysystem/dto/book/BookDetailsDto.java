@@ -8,8 +8,8 @@ import java.util.List;
 public record BookDetailsDto(
         Long id,
         String title,
+        int yearPublished,
         List<AuthorListItemDto> authors,
-        List<GenreDto> genres,
-        int yearPublished
+        List<GenreDto> genres
 ) {
 }

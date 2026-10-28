@@ -33,9 +33,24 @@ public class BookController {
     }
 
     @PostMapping
-    public ResponseEntity<BookListItemDto> createBook(
+    public ResponseEntity<BookDetailsDto> createBook(
             @RequestBody @Valid CreateBookRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(service.createBook(request));
+    }
+
+    @PutMapping("/{id}")
+    public BookDetailsDto updateBook(
+            @PathVariable Long id,
+            @RequestBody @Valid CreateBookRequest request
+    ) {
+        return service.updateBook(id, request);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteBook(
+            @PathVariable Long id
+    ) {
+        service.deleteBook(id);
     }
 }

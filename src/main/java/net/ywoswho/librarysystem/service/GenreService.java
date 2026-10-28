@@ -6,7 +6,7 @@ import net.ywoswho.librarysystem.repository.GenreRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Set;
 
 @Service
 public class GenreService {
@@ -18,6 +18,10 @@ public class GenreService {
 
     public List<GenreDto> getAllGenres() {
         return repository.findAll().stream().map(this::toDto).toList();
+    }
+
+    public List<Genre> getGenresByIds(Set<Long> ids) {
+        return repository.findAllById(ids);
     }
 
     public GenreDto toDto(Genre genre) {

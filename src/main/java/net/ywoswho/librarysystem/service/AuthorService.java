@@ -6,6 +6,7 @@ import net.ywoswho.librarysystem.repository.AuthorRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class AuthorService {
@@ -17,6 +18,10 @@ public class AuthorService {
 
     public List<AuthorListItemDto> getAllAuthors() {
         return repository.findAll().stream().map(this::toAuthorListItemDto).toList();
+    }
+
+    public List<Author> getAuthorsByIds(Set<Long> ids) {
+        return repository.findAllById(ids);
     }
 
     public AuthorListItemDto toAuthorListItemDto(Author author) {
