@@ -34,7 +34,8 @@ public class BookController {
 
     @PostMapping
     public ResponseEntity<BookDetailsDto> createBook(
-            @RequestBody @Valid CreateBookRequest request) {
+            @RequestBody @Valid CreateBookRequest request
+    ) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(service.createBook(request));
     }

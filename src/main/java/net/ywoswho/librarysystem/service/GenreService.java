@@ -1,30 +1,28 @@
 package net.ywoswho.librarysystem.service;
 
 import net.ywoswho.librarysystem.dto.GenreDto;
-import net.ywoswho.librarysystem.entity.Genre;
+import net.ywoswho.librarysystem.mapper.GenreMapper;
 import net.ywoswho.librarysystem.repository.GenreRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class GenreService {
-    private final GenreRepository repository;
+    private final GenreRepository genreRepository;
+    private final GenreMapper genreMapper;
 
-    public GenreService(GenreRepository repository) {
-        this.repository = repository;
+    public GenreService(GenreRepository repository, GenreMapper genreMapper) {
+        this.genreRepository = repository;
+        this.genreMapper = genreMapper;
     }
 
+    @Transactional(readOnly = true)
     public List<GenreDto> getAllGenres() {
-        return repository.findAll().stream().map(this::toDto).toList();
-    }
-
-    public List<Genre> getGenresByIds(Set<Long> ids) {
-        return repository.findAllById(ids);
-    }
-
-    public GenreDto toDto(Genre genre) {
-        return new GenreDto(genre.getId(), genre.getName());
+        return genreRepository.findAll()
+                .stream()
+                .map(genreMapper::toDto)
+                .toList();
     }
 }

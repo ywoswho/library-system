@@ -1,10 +1,13 @@
 package net.ywoswho.librarysystem.controller;
 
+import jakarta.validation.Valid;
+import net.ywoswho.librarysystem.dto.author.AuthorDetailsDto;
 import net.ywoswho.librarysystem.dto.author.AuthorListItemDto;
+import net.ywoswho.librarysystem.dto.author.CreateAuthorRequest;
 import net.ywoswho.librarysystem.service.AuthorService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,5 +23,35 @@ public class AuthorController {
     @GetMapping
     public List<AuthorListItemDto> getAllAuthors() {
         return service.getAllAuthors();
+    }
+
+    @GetMapping("/{id}")
+    public AuthorDetailsDto getAuthorById(
+            @PathVariable Long id
+    ) {
+        return service.getAuthorById(id);
+    }
+
+    @PostMapping
+    public ResponseEntity<AuthorDetailsDto> createAuthor(
+            @RequestBody @Valid CreateAuthorRequest author
+    ) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(service.createAuthor(author));
+    }
+
+    @PutMapping("/{id}")
+    public AuthorDetailsDto updateAuthor(
+            @PathVariable Long id,
+            @RequestBody @Valid CreateAuthorRequest author
+    ) {
+        return service.updateAuthor(id, author);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteAuthor(
+            @PathVariable Long id
+    ) {
+        service.deleteAuthor(id);
     }
 }
