@@ -1,4 +1,4 @@
-package net.ywoswho.librarysystem.dto;
+package net.ywoswho.librarysystem.dto.genre;
 
 public record GenreDto(
         Long id,

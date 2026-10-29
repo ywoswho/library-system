@@ -22,7 +22,12 @@ public class AuthorService {
     private final AuthorListItemMapper authorListItemMapper;
     private final BookRepository bookRepository;
 
-    public AuthorService(AuthorRepository authorRepository, AuthorMapper authorMapper, AuthorListItemMapper authorListItemMapper, BookRepository bookRepository) {
+    public AuthorService(
+            AuthorRepository authorRepository,
+            AuthorMapper authorMapper,
+            AuthorListItemMapper authorListItemMapper,
+            BookRepository bookRepository
+    ) {
         this.authorRepository = authorRepository;
         this.authorMapper = authorMapper;
         this.authorListItemMapper = authorListItemMapper;

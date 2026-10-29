@@ -24,6 +24,12 @@ public class Book {
     @Column(name = "title")
     private String title;
 
+    @Column(columnDefinition = "TEXT", name = "short_description")
+    private String shortDescription;
+
+    @Column(columnDefinition = "TEXT", name = "long_description")
+    private String longDescription;
+
     @Column(name = "year_published")
     private Integer yearPublished;
 

@@ -8,6 +8,10 @@ import java.util.Set;
 public record CreateBookRequest(
         @NotBlank
         String title,
+        @NotBlank
+        String shortDescription,
+        @NotBlank
+        String longDescription,
         @NotNull
         Integer yearPublished,
         @NotNull

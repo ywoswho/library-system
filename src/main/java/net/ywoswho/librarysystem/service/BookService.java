@@ -24,7 +24,13 @@ public class BookService {
     private final BookMapper bookMapper;
     private final BookListItemMapper bookListItemMapper;
 
-    public BookService(BookRepository bookRepository, AuthorRepository authorRepository, GenreRepository genreRepository, BookMapper bookMapper, BookListItemMapper bookListItemMapper) {
+    public BookService(
+            BookRepository bookRepository,
+            AuthorRepository authorRepository,
+            GenreRepository genreRepository,
+            BookMapper bookMapper,
+            BookListItemMapper bookListItemMapper
+    ) {
         this.bookRepository = bookRepository;
         this.authorRepository = authorRepository;
         this.genreRepository = genreRepository;
@@ -54,6 +60,8 @@ public class BookService {
         var book = new Book();
         book.setTitle(request.title());
         book.setYearPublished(request.yearPublished());
+        book.setShortDescription(request.shortDescription());
+        book.setLongDescription(request.longDescription());
 
         var authors = authorRepository.findAllById(
                 request.authorIds()
