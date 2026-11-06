@@ -1,5 +1,6 @@
 package net.ywoswho.librarysystem.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import net.ywoswho.librarysystem.dto.genre.CreateGenreRequest;
 import net.ywoswho.librarysystem.dto.genre.GenreDto;
 import net.ywoswho.librarysystem.entity.Genre;
@@ -37,5 +38,14 @@ public class GenreService {
         genre.setName(request.name());
 
         return genreMapper.toDto(genreRepository.save(genre));
+    }
+
+    @Transactional
+    public void deleteGenre(Long id) {
+        var genre = genreRepository.findById(id)
+                .orElseThrow(() ->
+                        new EntityNotFoundException("Genre not found with id: " + id)
+                );
+        genreRepository.delete(genre);
     }
 }
