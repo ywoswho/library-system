@@ -32,6 +32,7 @@ public class GenreController {
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteGenre(
             @PathVariable Long id
     ) {
