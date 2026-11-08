@@ -6,13 +6,12 @@ import net.ywoswho.librarysystem.dto.book.BookListItemDto;
 import net.ywoswho.librarysystem.dto.book.CreateBookRequest;
 import net.ywoswho.librarysystem.service.BookService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/books")
+@RequestMapping("/api/books")
 public class BookController {
     private final BookService service;
 
@@ -33,11 +32,11 @@ public class BookController {
     }
 
     @PostMapping
-    public ResponseEntity<BookDetailsDto> createBook(
+    @ResponseStatus(HttpStatus.CREATED)
+    public BookDetailsDto createBook(
             @RequestBody @Valid CreateBookRequest request
     ) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(service.createBook(request));
+        return service.createBook(request);
     }
 
     @PutMapping("/{id}")

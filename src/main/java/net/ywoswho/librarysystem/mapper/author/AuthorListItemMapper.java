@@ -1,4 +1,4 @@
-package net.ywoswho.librarysystem.mapper;
+package net.ywoswho.librarysystem.mapper.author;
 
 import net.ywoswho.librarysystem.dto.author.AuthorListItemDto;
 import net.ywoswho.librarysystem.entity.Author;

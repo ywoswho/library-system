@@ -6,13 +6,12 @@ import net.ywoswho.librarysystem.dto.author.AuthorListItemDto;
 import net.ywoswho.librarysystem.dto.author.CreateAuthorRequest;
 import net.ywoswho.librarysystem.service.AuthorService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/authors")
+@RequestMapping("/api/authors")
 public class AuthorController {
     private final AuthorService service;
 
@@ -33,11 +32,11 @@ public class AuthorController {
     }
 
     @PostMapping
-    public ResponseEntity<AuthorDetailsDto> createAuthor(
+    @ResponseStatus(HttpStatus.CREATED)
+    public AuthorDetailsDto createAuthor(
             @RequestBody @Valid CreateAuthorRequest author
     ) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(service.createAuthor(author));
+        return service.createAuthor(author);
     }
 
     @PutMapping("/{id}")

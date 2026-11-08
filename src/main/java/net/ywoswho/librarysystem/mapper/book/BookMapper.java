@@ -1,7 +1,9 @@
-package net.ywoswho.librarysystem.mapper;
+package net.ywoswho.librarysystem.mapper.book;
 
 import net.ywoswho.librarysystem.dto.book.BookDetailsDto;
 import net.ywoswho.librarysystem.entity.Book;
+import net.ywoswho.librarysystem.mapper.GenreMapper;
+import net.ywoswho.librarysystem.mapper.author.AuthorListItemMapper;
 import org.mapstruct.Mapper;
 
 @Mapper(
