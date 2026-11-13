@@ -25,26 +25,26 @@ public abstract class AbstractCrudIntegrationTest extends AbstractIntegrationTes
     }
 
     @Test
-    void shouldGetAll() throws Exception {
+    void shouldReturnAll() throws Exception {
         mvc.perform(get(baseUrl()))
                 .andExpect(status().isOk());
     }
 
     @Test
-    void shouldGetById() throws Exception {
+    void shouldReturnById() throws Exception {
         mvc.perform(get(baseUrl() + "/{id}", existingId))
                 .andExpect(status().isOk());
     }
 
     @Test
-    void shouldReturn404ForMissingResourceOnGet() throws Exception {
+    void shouldReturnNotFoundWhenResourceDoesNotExist() throws Exception {
         mvc.perform(get(baseUrl() + "/{id}", 999999))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     @WithMockAdmin
-    void shouldCreate() throws Exception {
+    void shouldCreateResource() throws Exception {
         mvc.perform(post(baseUrl())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(createPayload()))
@@ -53,7 +53,7 @@ public abstract class AbstractCrudIntegrationTest extends AbstractIntegrationTes
 
     @Test
     @WithMockModerator
-    void shouldUpdate() throws Exception {
+    void shouldUpdateResource() throws Exception {
         mvc.perform(put(baseUrl() + "/{id}", existingId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(updatePayload()))
@@ -62,7 +62,7 @@ public abstract class AbstractCrudIntegrationTest extends AbstractIntegrationTes
 
     @Test
     @WithMockAdmin
-    void shouldReturn404ForMissingResourceOnUpdate() throws Exception {
+    void shouldReturnNotFoundWhenUpdatingNonexistentResource() throws Exception {
         mvc.perform(put(baseUrl() + "/{id}", 999999)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(updatePayload()))
@@ -71,7 +71,7 @@ public abstract class AbstractCrudIntegrationTest extends AbstractIntegrationTes
 
     @Test
     @WithMockAdmin
-    void shouldDelete() throws Exception {
+    void shouldDeleteResource() throws Exception {
         mvc.perform(delete(baseUrl() + "/{id}", existingId))
                 .andExpect(status().isNoContent());
 
@@ -81,14 +81,14 @@ public abstract class AbstractCrudIntegrationTest extends AbstractIntegrationTes
 
     @Test
     @WithMockAdmin
-    void shouldReturn404ForMissingResourceOnDelete() throws Exception {
+    void shouldReturnNotFoundWhenDeletingNonexistentResource() throws Exception {
         mvc.perform(delete(baseUrl() + "/{id}", 999999))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     @WithMockAdmin
-    void shouldReturn400WhenCreatePayloadIsInvalid() throws Exception {
+    void shouldRejectCreationWhenPayloadIsInvalid() throws Exception {
         mvc.perform(post(baseUrl())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(invalidPayload()))
@@ -97,7 +97,7 @@ public abstract class AbstractCrudIntegrationTest extends AbstractIntegrationTes
 
     @Test
     @WithMockModerator
-    void shouldReturn400WhenUpdatePayloadIsInvalid() throws Exception {
+    void shouldRejectUpdateWhenPayloadIsInvalid() throws Exception {
         mvc.perform(put(baseUrl() + "/{id}", existingId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(invalidPayload()))
@@ -106,7 +106,7 @@ public abstract class AbstractCrudIntegrationTest extends AbstractIntegrationTes
 
     @Test
     @WithMockAdmin
-    void shouldReturn400WhenJsonIsInvalid() throws Exception {
+    void shouldRejectCreationWhenJsonIsMalformed() throws Exception {
         mvc.perform(post(baseUrl())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("BAD &*& JSON"))
@@ -114,13 +114,13 @@ public abstract class AbstractCrudIntegrationTest extends AbstractIntegrationTes
     }
 
     @Test
-    void shouldReturn400WhenIdTypeIsInvalid() throws Exception {
+    void shouldRejectRequestWhenIdFormatIsInvalid() throws Exception {
         mvc.perform(get(baseUrl() + "/{id}", "invalid-id"))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
-    void shouldReturn401WhenUnauthenticatedOnCreate() throws Exception {
+    void shouldRejectUnauthenticatedUserWhenCreatingResource() throws Exception {
         mvc.perform(post(baseUrl())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(createPayload()))
@@ -129,7 +129,7 @@ public abstract class AbstractCrudIntegrationTest extends AbstractIntegrationTes
 
     @Test
     @WithMockRegularUser
-    void shouldReturn403WhenRegularUserCreates() throws Exception {
+    void shouldForbidRegularUserFromCreatingResource() throws Exception {
         mvc.perform(post(baseUrl())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(createPayload()))
@@ -137,7 +137,7 @@ public abstract class AbstractCrudIntegrationTest extends AbstractIntegrationTes
     }
 
     @Test
-    void shouldReturn401WhenUnauthenticatedOnUpdate() throws Exception {
+    void shouldRejectUnauthenticatedUserWhenUpdatingResource() throws Exception {
         mvc.perform(put(baseUrl() + "/{id}", existingId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(updatePayload()))
@@ -146,7 +146,7 @@ public abstract class AbstractCrudIntegrationTest extends AbstractIntegrationTes
 
     @Test
     @WithMockRegularUser
-    void shouldReturn403WhenRegularUserUpdates() throws Exception {
+    void shouldForbidRegularUserFromUpdatingResource() throws Exception {
         mvc.perform(put(baseUrl() + "/{id}", existingId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(updatePayload()))
@@ -154,21 +154,21 @@ public abstract class AbstractCrudIntegrationTest extends AbstractIntegrationTes
     }
 
     @Test
-    void shouldReturn401WhenUnauthenticatedOnDelete() throws Exception {
+    void shouldRejectUnauthenticatedUserWhenDeletingResource() throws Exception {
         mvc.perform(delete(baseUrl() + "/{id}", existingId))
                 .andExpect(status().isUnauthorized());
     }
 
     @Test
     @WithMockRegularUser
-    void shouldReturn403WhenRegularUserDeletes() throws Exception {
+    void shouldForbidRegularUserFromDeletingResource() throws Exception {
         mvc.perform(delete(baseUrl() + "/{id}", existingId))
                 .andExpect(status().isForbidden());
     }
 
     @Test
     @WithMockModerator
-    void shouldReturn403WhenModeratorDeletes() throws Exception {
+    void shouldForbidModeratorFromDeletingResource() throws Exception {
         mvc.perform(delete(baseUrl() + "/{id}", existingId))
                 .andExpect(status().isForbidden());
     }

@@ -9,6 +9,7 @@ import org.junit.platform.suite.api.SuiteDisplayName;
 @SelectClasses({
         AuthorControllerTest.class,
         BookControllerTest.class,
-        GenreControllerTest.class
+        GenreControllerTest.class,
+        RentalControllerTest.class
 })
 public class ControllerIntegrationTestSuite {}

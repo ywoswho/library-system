@@ -107,7 +107,7 @@ class BookControllerTest extends AbstractCrudIntegrationTest {
 
     @Test
     @WithMockAdmin
-    void shouldReturn400WhenBookTitleIsBlank() throws Exception {
+    void shouldRejectWhenBookTitleIsBlank() throws Exception {
         String invalidBook = mapper.writeValueAsString(
                 new CreateBookRequest(
                         "",
@@ -127,7 +127,7 @@ class BookControllerTest extends AbstractCrudIntegrationTest {
 
     @Test
     @WithMockAdmin
-    void shouldReturn400WhenAuthorIdsAreNull() throws Exception {
+    void shouldRejectWhenAuthorIdsAreNull() throws Exception {
         String invalidBook = mapper.writeValueAsString(
                 new CreateBookRequest(
                         "Clean Architecture",
