@@ -4,6 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import net.ywoswho.librarysystem.dto.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -42,9 +43,9 @@ public class GlobalExceptionHandler {
                 .body(error);
     }
 
-    @ExceptionHandler(RentalOwnershipException.class)
+    @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ErrorResponse> handleRentalOwnershipException(
-            RentalOwnershipException e
+            AccessDeniedException e
     ) {
         var error = new ErrorResponse(
                 "Forbidden",

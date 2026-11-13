@@ -7,12 +7,12 @@ import net.ywoswho.librarysystem.entity.AppUser;
 import net.ywoswho.librarysystem.entity.Book;
 import net.ywoswho.librarysystem.entity.Rental;
 import net.ywoswho.librarysystem.entity.RentalStatus;
-import net.ywoswho.librarysystem.exception.RentalOwnershipException;
 import net.ywoswho.librarysystem.mapper.rental.AdminRentalMapper;
 import net.ywoswho.librarysystem.mapper.rental.RentalMapper;
 import net.ywoswho.librarysystem.repository.BookRepository;
 import net.ywoswho.librarysystem.repository.RentalRepository;
 import net.ywoswho.librarysystem.repository.UserRepository;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -87,7 +87,7 @@ public class RentalService {
                         new EntityNotFoundException("Rental not found with id: " + rentalId));
 
         if (!rental.getUser().getId().equals(userId)) {
-            throw new RentalOwnershipException();
+            throw new AccessDeniedException("User is not the owner of the rental");
         }
 
         if (rental.getStatus().equals(RentalStatus.RETURNED)) {
