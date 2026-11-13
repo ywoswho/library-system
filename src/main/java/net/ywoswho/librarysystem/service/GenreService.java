@@ -32,12 +32,36 @@ public class GenreService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
+    public GenreDto getGenreById(Long id) {
+        return genreRepository.findById(id)
+                .map(genreMapper::toDto)
+                .orElseThrow(() ->
+                        new EntityNotFoundException("Genre not found with id: " + id)
+                );
+    }
+
     @Transactional
     public GenreDto createGenre(CreateGenreRequest request) {
         var genre = new Genre();
         genre.setName(request.name());
 
         return genreMapper.toDto(genreRepository.save(genre));
+    }
+
+    @Transactional
+    public GenreDto updateGenre(
+            Long id,
+            CreateGenreRequest request
+    ) {
+        var genre = genreRepository.findById(id)
+                .orElseThrow(() ->
+                        new EntityNotFoundException("Genre not found with id: " + id)
+                );
+
+        genre.setName(request.name());
+
+        return genreMapper.toDto(genre);
     }
 
     @Transactional
