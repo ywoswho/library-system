@@ -8,10 +8,16 @@ import net.ywoswho.librarysystem.integration.base.AbstractCrudIntegrationTest;
 import net.ywoswho.librarysystem.repository.AuthorRepository;
 import net.ywoswho.librarysystem.repository.BookRepository;
 import net.ywoswho.librarysystem.repository.GenreRepository;
+import net.ywoswho.librarysystem.security.WithMockAdmin;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import tools.jackson.databind.ObjectMapper;
 
 import java.util.Set;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class BookControllerTest extends AbstractCrudIntegrationTest {
     @Autowired
@@ -83,5 +89,59 @@ class BookControllerTest extends AbstractCrudIntegrationTest {
                         Set.of(genreId)
                 )
         );
+    }
+
+    @Override
+    protected String invalidPayload() {
+        return mapper.writeValueAsString(
+                new CreateBookRequest(
+                        "Effective Java",
+                        "",
+                        "",
+                        2009,
+                        Set.of(authorId),
+                        Set.of(genreId)
+                )
+        );
+    }
+
+    @Test
+    @WithMockAdmin
+    void shouldReturn400WhenBookTitleIsBlank() throws Exception {
+        String invalidBook = mapper.writeValueAsString(
+                new CreateBookRequest(
+                        "",
+                        "Short desc",
+                        "Long desc",
+                        2024,
+                        Set.of(authorId),
+                        Set.of(genreId)
+                )
+        );
+
+        mvc.perform(post(baseUrl())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(invalidBook))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @WithMockAdmin
+    void shouldReturn400WhenAuthorIdsAreNull() throws Exception {
+        String invalidBook = mapper.writeValueAsString(
+                new CreateBookRequest(
+                        "Clean Architecture",
+                        "Desc",
+                        "Long desc",
+                        2024,
+                        null,
+                        Set.of(genreId)
+                )
+        );
+
+        mvc.perform(post(baseUrl())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(invalidBook))
+                .andExpect(status().isBadRequest());
     }
 }

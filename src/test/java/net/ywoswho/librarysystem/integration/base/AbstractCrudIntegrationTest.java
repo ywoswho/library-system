@@ -17,6 +17,7 @@ public abstract class AbstractCrudIntegrationTest extends AbstractIntegrationTes
     protected abstract Long createTestData();
     protected abstract String createPayload();
     protected abstract String updatePayload();
+    protected abstract String invalidPayload();
 
     @BeforeEach
     void setUp() {
@@ -83,6 +84,39 @@ public abstract class AbstractCrudIntegrationTest extends AbstractIntegrationTes
     void shouldReturn404ForMissingResourceOnDelete() throws Exception {
         mvc.perform(delete(baseUrl() + "/{id}", 999999))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @WithMockAdmin
+    void shouldReturn400WhenCreatePayloadIsInvalid() throws Exception {
+        mvc.perform(post(baseUrl())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(invalidPayload()))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @WithMockModerator
+    void shouldReturn400WhenUpdatePayloadIsInvalid() throws Exception {
+        mvc.perform(put(baseUrl() + "/{id}", existingId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(invalidPayload()))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @WithMockAdmin
+    void shouldReturn400WhenJsonIsInvalid() throws Exception {
+        mvc.perform(post(baseUrl())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("BAD &*& JSON"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void shouldReturn400WhenIdTypeIsInvalid() throws Exception {
+        mvc.perform(get(baseUrl() + "/{id}", "invalid-id"))
+                .andExpect(status().isBadRequest());
     }
 
     @Test

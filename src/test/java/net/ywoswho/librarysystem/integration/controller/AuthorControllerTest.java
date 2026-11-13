@@ -50,4 +50,15 @@ public class AuthorControllerTest extends AbstractCrudIntegrationTest {
                 )
         );
     }
+
+    @Override
+    protected String invalidPayload() {
+        return mapper.writeValueAsString(
+                new CreateAuthorRequest(
+                        "",
+                        "",
+                        Collections.emptySet()
+                )
+        );
+    }
 }

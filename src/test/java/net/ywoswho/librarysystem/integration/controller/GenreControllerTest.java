@@ -35,4 +35,9 @@ public class GenreControllerTest extends AbstractCrudIntegrationTest {
     protected String updatePayload() {
         return mapper.writeValueAsString(new CreateGenreRequest("Updated Sci-Fi"));
     }
+
+    @Override
+    protected String invalidPayload() {
+        return mapper.writeValueAsString(new CreateGenreRequest(""));
+    }
 }
