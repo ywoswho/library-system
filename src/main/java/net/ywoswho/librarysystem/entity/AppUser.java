@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Table(name = "users")
 @Entity
 @Getter
@@ -23,13 +26,13 @@ public class AppUser {
     )
     private String email;
 
-    @Column(
-            name = "password_hash",
-            nullable = false
-    )
+    @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 
+    @OneToMany(mappedBy = "user")
+    private Set<Rental> rentals = new HashSet<>();
+
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "role", nullable = false)
     private Role role = Role.USER;
 }

@@ -42,7 +42,12 @@ public class SecurityConfig {
                         s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
+
                         .requestMatchers(HttpMethod.GET, RESOURCE_PATHS).permitAll()
+
+                        .requestMatchers(HttpMethod.GET, "/api/rentals").hasRole("ADMIN")
+                        .requestMatchers("/api/rentals/**").authenticated()
+
                         .requestMatchers(HttpMethod.DELETE, RESOURCE_PATHS).hasRole("ADMIN")
                         .requestMatchers(RESOURCE_PATHS).hasAnyRole("MODERATOR", "ADMIN")
                         .anyRequest().authenticated())

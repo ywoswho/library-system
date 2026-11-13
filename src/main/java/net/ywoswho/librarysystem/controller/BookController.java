@@ -13,22 +13,22 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/books")
 public class BookController {
-    private final BookService service;
+    private final BookService bookService;
 
-    public BookController(BookService service) {
-        this.service = service;
+    public BookController(BookService bookService) {
+        this.bookService = bookService;
     }
 
     @GetMapping
     public List<BookListItemDto> getAllBooks() {
-        return service.getAllBooks();
+        return bookService.getAllBooks();
     }
 
     @GetMapping("/{id}")
     public BookDetailsDto getBookById(
             @PathVariable("id") Long id
     ) {
-        return service.getBookById(id);
+        return bookService.getBookById(id);
     }
 
     @PostMapping
@@ -36,7 +36,7 @@ public class BookController {
     public BookDetailsDto createBook(
             @RequestBody @Valid CreateBookRequest request
     ) {
-        return service.createBook(request);
+        return bookService.createBook(request);
     }
 
     @PutMapping("/{id}")
@@ -44,7 +44,7 @@ public class BookController {
             @PathVariable("id") Long id,
             @RequestBody @Valid CreateBookRequest request
     ) {
-        return service.updateBook(id, request);
+        return bookService.updateBook(id, request);
     }
 
     @DeleteMapping("/{id}")
@@ -52,6 +52,6 @@ public class BookController {
     public void deleteBook(
             @PathVariable("id") Long id
     ) {
-        service.deleteBook(id);
+        bookService.deleteBook(id);
     }
 }

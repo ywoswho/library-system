@@ -13,22 +13,22 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/authors")
 public class AuthorController {
-    private final AuthorService service;
+    private final AuthorService authorService;
 
-    public AuthorController(AuthorService service) {
-        this.service = service;
+    public AuthorController(AuthorService authorService) {
+        this.authorService = authorService;
     }
 
     @GetMapping
     public List<AuthorListItemDto> getAllAuthors() {
-        return service.getAllAuthors();
+        return authorService.getAllAuthors();
     }
 
     @GetMapping("/{id}")
     public AuthorDetailsDto getAuthorById(
             @PathVariable("id") Long id
     ) {
-        return service.getAuthorById(id);
+        return authorService.getAuthorById(id);
     }
 
     @PostMapping
@@ -36,7 +36,7 @@ public class AuthorController {
     public AuthorDetailsDto createAuthor(
             @RequestBody @Valid CreateAuthorRequest author
     ) {
-        return service.createAuthor(author);
+        return authorService.createAuthor(author);
     }
 
     @PutMapping("/{id}")
@@ -44,7 +44,7 @@ public class AuthorController {
             @PathVariable("id") Long id,
             @RequestBody @Valid CreateAuthorRequest author
     ) {
-        return service.updateAuthor(id, author);
+        return authorService.updateAuthor(id, author);
     }
 
     @DeleteMapping("/{id}")
@@ -52,6 +52,6 @@ public class AuthorController {
     public void deleteAuthor(
             @PathVariable("id") Long id
     ) {
-        service.deleteAuthor(id);
+        authorService.deleteAuthor(id);
     }
 }

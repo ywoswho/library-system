@@ -39,6 +39,9 @@ public class Book {
     @ManyToMany(mappedBy = "books")
     private Set<Genre> genres = new HashSet<>();
 
+    @OneToMany(mappedBy = "book")
+    private Set<Rental> rentals = new HashSet<>();
+
     public void addAuthor(Author author) {
         authors.add(author);
         author.getBooks().add(this);
